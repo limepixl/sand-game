@@ -20,7 +20,7 @@ function Iterate(grid, rows, columns)
 	{
 		let currentIndex = j + i * columns;
 
-		if(grid[currentIndex])
+		if(grid[currentIndex] != 2 && grid[currentIndex] != 0)
 		{
 			if(i + 1 < rows && grid[currentIndex + columns] == 0)
 			{
@@ -50,8 +50,8 @@ function Iterate(grid, rows, columns)
 			if(grid[currentIndex] == 4 || grid[currentIndex] == 5)
 			{
 				// Pick random direction
-				let dirs = [-1, 1];
-				let dir = dirs[Math.floor(Math.random() * 2)];
+				let dirs = [-2, -1, 1, 2];
+				let dir = dirs[Math.floor(Math.random() * dirs.length)];
 				if(j + dir >= 0 && j + dir < columns && grid[currentIndex + dir] == 0 && tmp[currentIndex + dir] == 0)
 				{
 					tmp[currentIndex + dir] = tmp[currentIndex];
