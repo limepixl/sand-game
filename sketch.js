@@ -20,48 +20,89 @@ function Iterate(grid, rows, columns)
 	{
 		let currentIndex = j + i * columns;
 
-		if(grid[currentIndex] != 2 && grid[currentIndex] != 0)
+		switch(grid[currentIndex])
 		{
-			if(i + 1 < rows && grid[currentIndex + columns] == 0)
+		// Sand and Dirt
+		case 1:
+		case 3:
+			if(i + 1 < rows)
 			{
-				tmp[currentIndex + columns] = tmp[currentIndex];
-				tmp[currentIndex] = 0;
-			} else if(i + 1 < rows && j > 0 && grid[currentIndex + columns - 1] == 0)
-			{
-				tmp[currentIndex + columns - 1] = tmp[currentIndex];
-				tmp[currentIndex] = 0;
-			} else if(i + 1 < rows && j + 1 < columns && grid[currentIndex + columns + 1] == 0)
-			{
-				tmp[currentIndex + columns + 1] = tmp[currentIndex];
-				tmp[currentIndex] = 0;
-			} else if(i + 1 < rows && (grid[currentIndex + columns] == 4 || grid[currentIndex + columns] == 5))
-			{
-				let tmpVal = tmp[currentIndex + columns];
-				tmp[currentIndex + columns] = tmp[currentIndex];
-				tmp[currentIndex] = tmpVal;
-			} else if(i + 1 < rows && j > 0 && (grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5))
-			{
-				let tmpVal = tmp[currentIndex + columns - 1];
-				tmp[currentIndex + columns - 1] = tmp[currentIndex];
-				tmp[currentIndex] = tmpVal;
-			} else if(i + 1 < rows && j + 1 < columns && (grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5))
-			{
-				let tmpVal = tmp[currentIndex + columns + 1];
-				tmp[currentIndex + columns + 1] = tmp[currentIndex];
-				tmp[currentIndex] = tmpVal;
-			}
-			if(grid[currentIndex] == 4 || grid[currentIndex] == 5)
-			{
-				// Pick random direction
-				let dirs = [-2, -1, 1, 2];
-				let dir = dirs[Math.floor(Math.random() * dirs.length)];
-				if(j + dir >= 0 && j + dir < columns && grid[currentIndex + dir] == 0 && tmp[currentIndex + dir] == 0)
+				if(grid[currentIndex + columns] == 0)
 				{
-					tmp[currentIndex + dir] = tmp[currentIndex];
+					tmp[currentIndex + columns] = tmp[currentIndex];
+					tmp[currentIndex] = 0;
+				} else if(j > 0 && grid[currentIndex + columns - 1] == 0)
+				{
+					tmp[currentIndex + columns - 1] = tmp[currentIndex];
+					tmp[currentIndex] = 0;
+				} else if(j + 1 < columns && grid[currentIndex + columns + 1] == 0)
+				{
+					tmp[currentIndex + columns + 1] = tmp[currentIndex];
+					tmp[currentIndex] = 0;
+				}
+				else if(grid[currentIndex + columns] == 4 || grid[currentIndex + columns] == 5)
+				{
+					let tmpVal = tmp[currentIndex + columns];
+					tmp[currentIndex + columns] = tmp[currentIndex];
+					tmp[currentIndex] = tmpVal;
+				} else if(grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5)
+				{
+					let tmpVal = tmp[currentIndex + columns - 1];
+					tmp[currentIndex + columns - 1] = tmp[currentIndex];
+					tmp[currentIndex] = tmpVal;
+				} else if(grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5)
+				{
+					let tmpVal = tmp[currentIndex + columns + 1];
+					tmp[currentIndex + columns + 1] = tmp[currentIndex];
+					tmp[currentIndex] = tmpVal;
+				}
+			}
+			break;
+		case 4:
+		case 5:
+			if(i + 1 < rows)
+			{
+				if(grid[currentIndex + columns] == 0)
+				{
+					tmp[currentIndex + columns] = tmp[currentIndex];
+					tmp[currentIndex] = 0;
+				} else if(j > 0 && grid[currentIndex + columns - 1] == 0)
+				{
+					tmp[currentIndex + columns - 1] = tmp[currentIndex];
+					tmp[currentIndex] = 0;
+				} else if(j + 1 < columns && grid[currentIndex + columns + 1] == 0)
+				{
+					tmp[currentIndex + columns + 1] = tmp[currentIndex];
+					tmp[currentIndex] = 0;
+				} else if(j > 0 && 
+						 (grid[currentIndex + columns] == 5 && grid[currentIndex] == 4) ||
+						 (grid[currentIndex + columns] == 4 && grid[currentIndex] == 5))
+				{
+					tmp[currentIndex + columns] = 2;
+					tmp[currentIndex] = 0;
+				} else if(j > 0 && 
+						 (grid[currentIndex + columns - 1] == 5 && grid[currentIndex] == 4) ||
+						 (grid[currentIndex + columns - 1] == 4 && grid[currentIndex] == 5))
+				{
+					tmp[currentIndex + columns - 1] = 2;
+					tmp[currentIndex] = 0;
+				} else if(j > 0 && 
+						(grid[currentIndex + columns + 1] == 5 && grid[currentIndex] == 4)  ||
+						(grid[currentIndex + columns + 1] == 4 && grid[currentIndex] == 5))
+				{
+					tmp[currentIndex + columns + 1] = 2;
 					tmp[currentIndex] = 0;
 				}
 			}
-		}
+			// Pick random direction to flow in
+			let dirs = [-2, -1, 1, 2];
+			let dir = dirs[Math.floor(Math.random() * dirs.length)];
+			if(j + dir >= 0 && j + dir < columns && grid[currentIndex + dir] == 0 && tmp[currentIndex + dir] == 0)
+			{
+				tmp[currentIndex + dir] = tmp[currentIndex];
+				tmp[currentIndex] = 0;
+			}
+		};
 	}
 
 	return tmp;
