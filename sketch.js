@@ -58,6 +58,7 @@ function Iterate(grid, rows, columns)
 				}
 			}
 			break;
+		// Water and Lava
 		case 4:
 		case 5:
 			if(i + 1 < rows)
