@@ -142,9 +142,12 @@ function draw()
 		}
 		grid[currentPixelX + (currentPixelY + 1) * columns] = currentBlock.valueOf();
 		grid[currentPixelX + (currentPixelY - 1) * columns] = currentBlock.valueOf();
-		grid[currentPixelX + 1 + currentPixelY * columns] = currentBlock.valueOf();
-		grid[currentPixelX + 1 + (currentPixelY + 1) * columns] = currentBlock.valueOf();
-		grid[currentPixelX + 1 + (currentPixelY - 1) * columns] = currentBlock.valueOf();
+		if(currentPixelX + 1 < columns)
+		{
+			grid[currentPixelX + 1 + currentPixelY * columns] = currentBlock.valueOf();
+			grid[currentPixelX + 1 + (currentPixelY + 1) * columns] = currentBlock.valueOf();
+			grid[currentPixelX + 1 + (currentPixelY - 1) * columns] = currentBlock.valueOf();
+		}
 	}
 
 	if(keyIsPressed)
