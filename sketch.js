@@ -34,18 +34,21 @@ function Iterate(grid, rows, columns)
 			{
 				tmp[currentIndex + columns + 1] = tmp[currentIndex];
 				tmp[currentIndex] = 0;
-			} else if(i + 1 < rows && grid[currentIndex + columns] == 4)
+			} else if(i + 1 < rows && (grid[currentIndex + columns] == 4 || grid[currentIndex + columns] == 5))
 			{
+				let tmpVal = tmp[currentIndex + columns];
 				tmp[currentIndex + columns] = tmp[currentIndex];
-				tmp[currentIndex] = 4;
-			} else if(i + 1 < rows && j > 0 && grid[currentIndex + columns - 1] == 4)
+				tmp[currentIndex] = tmpVal;
+			} else if(i + 1 < rows && j > 0 && (grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5))
 			{
+				let tmpVal = tmp[currentIndex + columns - 1];
 				tmp[currentIndex + columns - 1] = tmp[currentIndex];
-				tmp[currentIndex] = 4;
-			} else if(i + 1 < rows && j + 1 < columns && grid[currentIndex + columns + 1] == 4)
+				tmp[currentIndex] = tmpVal;
+			} else if(i + 1 < rows && j + 1 < columns && (grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5))
 			{
+				let tmpVal = tmp[currentIndex + columns + 1];
 				tmp[currentIndex + columns + 1] = tmp[currentIndex];
-				tmp[currentIndex] = 4;
+				tmp[currentIndex] = tmpVal;
 			}
 			if(grid[currentIndex] == 4 || grid[currentIndex] == 5)
 			{
