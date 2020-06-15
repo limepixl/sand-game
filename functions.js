@@ -169,8 +169,7 @@ function Iterate(grid, rows, columns)
 					tmp[currentIndex + columns + 1] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
 				} 
-				else if(j > 0 && 
-						 (grid[currentIndex + columns] == 5 && grid[currentIndex] == 4) ||
+				else if( (grid[currentIndex + columns] == 5 && grid[currentIndex] == 4) ||
 						 (grid[currentIndex + columns] == 4 && grid[currentIndex] == 5))
 				{
 					tmp[currentIndex + columns] = 2;
@@ -183,7 +182,7 @@ function Iterate(grid, rows, columns)
 					tmp[currentIndex + columns - 1] = 2;
 					tmp[currentIndex] = 0;
 				} 
-				else if(j > 0 && 
+				else if(j + 1 < columns && 
 						(grid[currentIndex + columns + 1] == 5 && grid[currentIndex] == 4)  ||
 						(grid[currentIndex + columns + 1] == 4 && grid[currentIndex] == 5))
 				{
