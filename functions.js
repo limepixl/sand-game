@@ -14,20 +14,20 @@ function draw()
         let currentPixelY = Math.floor(clientY / (windowHeight / rows));
         let currentIndex = currentPixelX + currentPixelY * columns;
 
-        grid[currentIndex] = (!grid[currentIndex] ? currentBlock.valueOf() : grid[currentIndex]);
+        grid[currentIndex] = (!grid[currentIndex] ? currentBlock : grid[currentIndex]);
         if(currentPixelX - 1 >= 0)
         {
-            grid[currentIndex - 1] = (!grid[currentIndex - 1] ? currentBlock.valueOf() : grid[currentIndex - 1]);
-            grid[currentIndex - 1 + columns] = (!grid[currentIndex - 1 + columns] ? currentBlock.valueOf() : grid[currentIndex - 1 + columns]);
-            grid[currentIndex - 1 - columns] = (!grid[currentIndex - 1 - columns] ? currentBlock.valueOf() : grid[currentIndex - 1 - columns]);
+            grid[currentIndex - 1] = (!grid[currentIndex - 1] ? currentBlock : grid[currentIndex - 1]);
+            grid[currentIndex - 1 + columns] = (!grid[currentIndex - 1 + columns] ? currentBlock : grid[currentIndex - 1 + columns]);
+            grid[currentIndex - 1 - columns] = (!grid[currentIndex - 1 - columns] ? currentBlock : grid[currentIndex - 1 - columns]);
         }
-        grid[currentIndex + columns] = (!grid[currentIndex + columns] ? currentBlock.valueOf() : grid[currentIndex + columns]);
-        grid[currentIndex - columns] = (!grid[currentIndex - columns] ? currentBlock.valueOf() : grid[currentIndex - columns]);
+        grid[currentIndex + columns] = (!grid[currentIndex + columns] ? currentBlock : grid[currentIndex + columns]);
+        grid[currentIndex - columns] = (!grid[currentIndex - columns] ? currentBlock : grid[currentIndex - columns]);
         if(currentPixelX + 1 < columns)
         {
-            grid[currentIndex + 1] = (!grid[currentIndex + 1] ? currentBlock.valueOf() : grid[currentIndex + 1]);
-            grid[currentIndex + 1 + columns] = (!grid[currentIndex + 1 + columns] ? currentBlock.valueOf() : grid[currentIndex + 1 + columns]);
-            grid[currentIndex + 1 - columns] = (!grid[currentIndex + 1 - columns] ? currentBlock.valueOf() : grid[currentIndex + 1 - columns]);
+            grid[currentIndex + 1] = (!grid[currentIndex + 1] ? currentBlock : grid[currentIndex + 1]);
+            grid[currentIndex + 1 + columns] = (!grid[currentIndex + 1 + columns] ? currentBlock : grid[currentIndex + 1 + columns]);
+            grid[currentIndex + 1 - columns] = (!grid[currentIndex + 1 - columns] ? currentBlock : grid[currentIndex + 1 - columns]);
         }
     }
 
@@ -41,19 +41,19 @@ function draw()
         switch(charStr)
 	    {
 	    case '1':
-	    	currentBlock = blocks.SAND;
+	    	currentBlock = 1;
 	    	break;
 	    case '2':
-	    	currentBlock = blocks.STONE;
+	    	currentBlock = 2;
 	    	break;
 	    case '3':
-	    	currentBlock = blocks.DIRT;
+	    	currentBlock = 3;
 	    	break;
 	    case '4':
-	    	currentBlock = blocks.WATER;
+	    	currentBlock = 4;
 	    	break;
 	    case '5':
-	    	currentBlock = blocks.LAVA;
+	    	currentBlock = 5;
 	    	break;
 	    default:
         }
@@ -98,6 +98,10 @@ function draw()
 function Iterate(grid, rows, columns)
 {
 	let tmp = grid.slice();
+	let tmpVal;
+
+	// Directions for flowing liquids
+	let dirs = [-3, -2, -1, 1, 2, 3];
 	for(let i = 0; i < rows; i++)
 	for(let j = 0; j < columns; j++)
 	{
@@ -127,19 +131,19 @@ function Iterate(grid, rows, columns)
 				}
 				else if(grid[currentIndex + columns] == 4 || grid[currentIndex + columns] == 5)
 				{
-					let tmpVal = tmp[currentIndex + columns];
+					tmpVal = tmp[currentIndex + columns];
 					tmp[currentIndex + columns] = tmp[currentIndex];
 					tmp[currentIndex] = tmpVal;
 				} 
 				else if(j > 0 && grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5)
 				{
-					let tmpVal = tmp[currentIndex + columns - 1];
+					tmpVal = tmp[currentIndex + columns - 1];
 					tmp[currentIndex + columns - 1] = tmp[currentIndex];
 					tmp[currentIndex] = tmpVal;
 				} 
 				else if(j + 1 < columns && grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5)
 				{
-					let tmpVal = tmp[currentIndex + columns + 1];
+					tmpVal = tmp[currentIndex + columns + 1];
 					tmp[currentIndex + columns + 1] = tmp[currentIndex];
 					tmp[currentIndex] = tmpVal;
 				}
@@ -193,7 +197,6 @@ function Iterate(grid, rows, columns)
                 break;
 
 			// Pick random direction to flow in
-            let dirs = [-3, -2, -1, 1, 2, 3];
             let dir = dirs[Math.floor(Math.random() * dirs.length)];
 			if(j + dir >= 0 && j + dir < columns && grid[currentIndex + dir] == 0 && tmp[currentIndex + dir] == 0)
 			{

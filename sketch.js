@@ -6,15 +6,14 @@ canvas.width = windowWidth;
 canvas.height = windowHeight;
 var ctx = canvas.getContext("2d");
 
-const blocks = 
-{
-	SAND: 1,
-	STONE: 2,
-	DIRT: 3,
-	WATER: 4,
-	LAVA: 5
-};
-var currentBlock = blocks.SAND;
+/*	Blocks:
+ *	1 = sand
+ *  2 = stone
+ *  3 = dirt
+ *  4 = water
+ *  5 = lava
+ */
+var currentBlock = 1;
 
 var particleSize = 10;
 var rows = Math.ceil(windowHeight / particleSize);
