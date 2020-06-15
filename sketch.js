@@ -14,6 +14,21 @@ const blocks =
 };
 var currentBlock;
 
+function FastRandom()
+{
+	let x=123456789, y=362436069, z=521288629;
+	let t;
+    x ^= x << 16;
+    x ^= x >> 5;
+    x ^= x << 1;
+
+  	t = x;
+   	x = y;
+   	y = z;
+   	z = t ^ x ^ y;
+	return z;
+}
+
 function Iterate(grid, rows, columns)
 {
 	let tmp = grid.slice();
