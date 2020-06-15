@@ -1,6 +1,8 @@
+p5.disableFriendlyErrors = true; // disables FES
+
 var particleSize = 10;
 var rows, columns;
-var grid;
+var grid = [];
 
 const blocks = 
 {
@@ -31,11 +33,13 @@ function Iterate(grid, rows, columns)
 				{
 					tmp[currentIndex + columns] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
-				} else if(j > 0 && grid[currentIndex + columns - 1] == 0)
+				} 
+				else if(j > 0 && grid[currentIndex + columns - 1] == 0)
 				{
 					tmp[currentIndex + columns - 1] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
-				} else if(j + 1 < columns && grid[currentIndex + columns + 1] == 0)
+				} 
+				else if(j + 1 < columns && grid[currentIndex + columns + 1] == 0)
 				{
 					tmp[currentIndex + columns + 1] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
@@ -45,12 +49,14 @@ function Iterate(grid, rows, columns)
 					let tmpVal = tmp[currentIndex + columns];
 					tmp[currentIndex + columns] = tmp[currentIndex];
 					tmp[currentIndex] = tmpVal;
-				} else if(grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5)
+				} 
+				else if(j > 0 && grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5)
 				{
 					let tmpVal = tmp[currentIndex + columns - 1];
 					tmp[currentIndex + columns - 1] = tmp[currentIndex];
 					tmp[currentIndex] = tmpVal;
-				} else if(grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5)
+				} 
+				else if(j + 1 < columns && grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5)
 				{
 					let tmpVal = tmp[currentIndex + columns + 1];
 					tmp[currentIndex + columns + 1] = tmp[currentIndex];
@@ -67,27 +73,32 @@ function Iterate(grid, rows, columns)
 				{
 					tmp[currentIndex + columns] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
-				} else if(j > 0 && grid[currentIndex + columns - 1] == 0)
+				} 
+				else if(j > 0 && grid[currentIndex + columns - 1] == 0)
 				{
 					tmp[currentIndex + columns - 1] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
-				} else if(j + 1 < columns && grid[currentIndex + columns + 1] == 0)
+				} 
+				else if(j + 1 < columns && grid[currentIndex + columns + 1] == 0)
 				{
 					tmp[currentIndex + columns + 1] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
-				} else if(j > 0 && 
+				} 
+				else if(j > 0 && 
 						 (grid[currentIndex + columns] == 5 && grid[currentIndex] == 4) ||
 						 (grid[currentIndex + columns] == 4 && grid[currentIndex] == 5))
 				{
 					tmp[currentIndex + columns] = 2;
 					tmp[currentIndex] = 0;
-				} else if(j > 0 && 
+				} 
+				else if(j > 0 && 
 						 (grid[currentIndex + columns - 1] == 5 && grid[currentIndex] == 4) ||
 						 (grid[currentIndex + columns - 1] == 4 && grid[currentIndex] == 5))
 				{
 					tmp[currentIndex + columns - 1] = 2;
 					tmp[currentIndex] = 0;
-				} else if(j > 0 && 
+				} 
+				else if(j > 0 && 
 						(grid[currentIndex + columns + 1] == 5 && grid[currentIndex] == 4)  ||
 						(grid[currentIndex + columns + 1] == 4 && grid[currentIndex] == 5))
 				{
@@ -103,6 +114,9 @@ function Iterate(grid, rows, columns)
 				tmp[currentIndex + dir] = tmp[currentIndex];
 				tmp[currentIndex] = 0;
 			}
+			break;
+		default:
+			continue;
 		};
 	}
 
@@ -116,9 +130,9 @@ function setup()
 
 	rows = Math.ceil(windowHeight / particleSize);
 	columns = Math.ceil(windowWidth / particleSize);
-	grid = [rows * columns];
+
 	for(let i = 0; i < rows*columns; i++)
-		grid[i] = 0;
+		grid.push(0);
 
 	currentBlock = blocks.SAND;
 }
@@ -133,20 +147,22 @@ function draw()
 	{
 		let currentPixelX = Math.floor(mouseX / (windowWidth / columns));
 		let currentPixelY = Math.floor(mouseY / (windowHeight / rows));
-		grid[currentPixelX + currentPixelY * columns] = currentBlock.valueOf();
+		let currentIndex = currentPixelX + currentPixelY * columns;
+
+		grid[currentIndex] = (!grid[currentIndex] ? currentBlock.valueOf() : grid[currentIndex]);
 		if(currentPixelX - 1 >= 0)
 		{
-			grid[currentPixelX - 1 + currentPixelY * columns] = currentBlock.valueOf();
-			grid[currentPixelX - 1 + (currentPixelY + 1) * columns] = currentBlock.valueOf();
-			grid[currentPixelX - 1 + (currentPixelY - 1) * columns] = currentBlock.valueOf();
+			grid[currentIndex - 1] = (!grid[currentIndex - 1] ? currentBlock.valueOf() : grid[currentIndex - 1]);
+			grid[currentIndex - 1 + columns] = (!grid[currentIndex - 1 + columns] ? currentBlock.valueOf() : grid[currentIndex - 1 + columns]);
+			grid[currentIndex - 1 - columns] = (!grid[currentIndex - 1 - columns] ? currentBlock.valueOf() : grid[currentIndex - 1 - columns]);
 		}
-		grid[currentPixelX + (currentPixelY + 1) * columns] = currentBlock.valueOf();
-		grid[currentPixelX + (currentPixelY - 1) * columns] = currentBlock.valueOf();
+		grid[currentIndex + columns] = (!grid[currentIndex + columns] ? currentBlock.valueOf() : grid[currentIndex + columns]);
+		grid[currentIndex - columns] = (!grid[currentIndex - columns] ? currentBlock.valueOf() : grid[currentIndex - columns]);
 		if(currentPixelX + 1 < columns)
 		{
-			grid[currentPixelX + 1 + currentPixelY * columns] = currentBlock.valueOf();
-			grid[currentPixelX + 1 + (currentPixelY + 1) * columns] = currentBlock.valueOf();
-			grid[currentPixelX + 1 + (currentPixelY - 1) * columns] = currentBlock.valueOf();
+			grid[currentIndex + 1] = (!grid[currentIndex + 1] ? currentBlock.valueOf() : grid[currentIndex + 1]);
+			grid[currentIndex + 1 + columns] = (!grid[currentIndex + 1 + columns] ? currentBlock.valueOf() : grid[currentIndex + 1 + columns]);
+			grid[currentIndex + 1 - columns] = (!grid[currentIndex + 1 - columns] ? currentBlock.valueOf() : grid[currentIndex + 1 - columns]);
 		}
 	}
 
@@ -174,9 +190,13 @@ function draw()
 	}
 	
 	noStroke();
+	
+	let lastBlock = 0;
 	for(let i = 0; i < rows; i++)
 	for(let j = 0; j < columns; j++)
 	{
+		// Only update the color if block bolor is different than the last color
+		if(lastBlock != grid[j + i * columns])
 		switch(grid[j + i * columns])
 		{
 		case 1:
@@ -201,5 +221,6 @@ function draw()
 		if(grid[j + i * columns])
 			rect(j * particleSize, i * particleSize, particleSize, particleSize);
 
+		lastBlock = grid[j + i * columns];
 	}
 }
