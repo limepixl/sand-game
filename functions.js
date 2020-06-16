@@ -169,27 +169,20 @@ function Iterate(grid, rows, columns)
 					tmp[currentIndex + columns + 1] = tmp[currentIndex];
 					tmp[currentIndex] = 0;
 				} 
-				else if( (grid[currentIndex + columns] == 5 && grid[currentIndex] == 4) ||
-						 (grid[currentIndex + columns] == 4 && grid[currentIndex] == 5))
+			}
+
+			for(let k = -1; k <= 1; k++)
+			for(let l = 0; l <= 1; l++)
+			if(!(k == 0 && l == 0))
+			{
+				if(j + k >= 0 && j + k < columns && i + l <= rows &&
+				  ((grid[currentIndex] == 4 && grid[currentIndex + k + columns * l] == 5) ||
+				   (grid[currentIndex] == 5 && grid[currentIndex + k + columns * l] == 4)))
 				{
-					tmp[currentIndex + columns] = 2;
-					tmp[currentIndex] = 0;
-				} 
-				else if(j > 0 && 
-						 (grid[currentIndex + columns - 1] == 5 && grid[currentIndex] == 4) ||
-						 (grid[currentIndex + columns - 1] == 4 && grid[currentIndex] == 5))
-				{
-					tmp[currentIndex + columns - 1] = 2;
-					tmp[currentIndex] = 0;
-				} 
-				else if(j + 1 < columns && 
-						(grid[currentIndex + columns + 1] == 5 && grid[currentIndex] == 4)  ||
-						(grid[currentIndex + columns + 1] == 4 && grid[currentIndex] == 5))
-				{
-					tmp[currentIndex + columns + 1] = 2;
+					tmp[currentIndex + k + columns * l] = 2;
 					tmp[currentIndex] = 0;
 				}
-            }
+			}
 
             // If either the left or right block is occupied, don't flow
             if(grid[currentIndex + 1] && grid[currentIndex - 1])
