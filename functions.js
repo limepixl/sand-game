@@ -1,12 +1,14 @@
 var mouseClick = false;
 var clientX, clientY;
 
+var gridCopy = [];
+var changed = [];
+
 function draw()
 {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+	gridCopy = grid.slice();
+	grid = Iterate(grid, rows, columns).slice();
 
-    grid = Iterate(grid, rows, columns).slice();
-    
     // Mouse input
     if(mouseClick)
     {
@@ -29,7 +31,10 @@ function draw()
             grid[currentIndex + 1 + columns] = (!grid[currentIndex + 1 + columns] ? currentBlock : grid[currentIndex + 1 + columns]);
             grid[currentIndex + 1 - columns] = (!grid[currentIndex + 1 - columns] ? currentBlock : grid[currentIndex + 1 - columns]);
         }
-    }
+	}
+	
+	for(let i = 0; i < grid.length; i++)
+		changed[i] = grid[i] !== gridCopy[i];
 
     // Keyboard input
     document.onkeypress = function(evt) 
@@ -59,14 +64,15 @@ function draw()
         }
     };
 	
-	let lastBlock = 0;
 	for(let i = 0; i < rows; i++)
 	for(let j = 0; j < columns; j++)
 	{
 		// Only update the color if block bolor is different than the last color
-		if(lastBlock != grid[j + i * columns])
 		switch(grid[j + i * columns])
 		{
+		case 0:
+			ctx.fillStyle = '#FFFFFF';
+			break;
 		case 1:
 			ctx.fillStyle = '#FFF8AD';
 			break;
@@ -86,10 +92,8 @@ function draw()
 			continue;
 		}
 
-		if(grid[j + i * columns])
+		if(changed[j + i * columns])
 			ctx.fillRect(j * particleSize, i * particleSize, particleSize, particleSize);
-
-		lastBlock = grid[j + i * columns];
     }
     
     window.requestAnimationFrame(draw);
