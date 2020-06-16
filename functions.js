@@ -139,13 +139,13 @@ function Iterate(grid, rows, columns)
 					tmp[currentIndex + columns] = tmp[currentIndex];
 					tmp[currentIndex] = tmpVal;
 				} 
-				else if(j > 0 && grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5)
+				else if(j > 0 && (grid[currentIndex + columns - 1] == 4 || grid[currentIndex + columns - 1] == 5))
 				{
 					tmpVal = tmp[currentIndex + columns - 1];
 					tmp[currentIndex + columns - 1] = tmp[currentIndex];
 					tmp[currentIndex] = tmpVal;
 				} 
-				else if(j + 1 < columns && grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5)
+				else if(j + 1 < columns && (grid[currentIndex + columns + 1] == 4 || grid[currentIndex + columns + 1] == 5))
 				{
 					tmpVal = tmp[currentIndex + columns + 1];
 					tmp[currentIndex + columns + 1] = tmp[currentIndex];
